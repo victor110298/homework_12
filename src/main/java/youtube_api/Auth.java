@@ -23,6 +23,7 @@ public class Auth {
     public static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
     public static final JsonFactory JSON_FACTORY = new JacksonFactory();
     private static final String CREDENTIALS_DIRECTORY = ".oauth-credentials";
+
     public static Credential authorize(List<String> scopes, String credentialDatastore) throws IOException {
         Reader clientSecretReader = new InputStreamReader(Auth.class.getResourceAsStream("/client_secrets.json"));
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, clientSecretReader);
@@ -32,6 +33,7 @@ public class Auth {
                 HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, scopes).setCredentialDataStore(datastore)
                 .build();
         LocalServerReceiver localReceiver = new LocalServerReceiver.Builder().setPort(8080).build();
+
         return new AuthorizationCodeInstalledApp(flow, localReceiver).authorize("user");
     }
 }
